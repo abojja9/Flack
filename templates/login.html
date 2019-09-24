@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+{% from 'field-macro.html' import displayField %}
+{% block title %} Login {% endblock title%}
+
+{% block content %}
+        <h2>Login!</h2>
+        <p>Enter username and password to use Flack</p>
+
+        <form action="{{ url_for('login') }}" method="POST">
+            {{
+                displayField(form.username, 'Username',  autocomplete="off", autofocus=true)
+            }}
+
+            {{
+                displayField(form.password, 'Password')
+            }}
+
+            <div class="form-group">
+                    <input type="submit" value="Login" class="btn btn-warning">
+            </div>
+            {{ form.csrf_token }}
+
+        </form>
+{% endblock %}

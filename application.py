@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, render_template
+from flask import Flask, render_template, redirect, url_for
 from flask_socketio import SocketIO, emit
 
 from form_fields import *
@@ -19,15 +19,31 @@ db = SQLAlchemy(app)
 def index():
 
     reg_form = RegistrationForm()
+
+    # Update the DB if the registraion details are valid.
     if reg_form.validate_on_submit():
         username = reg_form.username.data
         password = reg_form.password.data
-
 
         # Add user to DB
         user = User(username=username, password=password)
         db.session.add(user)
         db.session.commit()
-        return "Inserted to DB"
+        return redirect(url_for('login'))
 
     return render_template('index.html', form=reg_form)
+
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    """ Route for login"""
+
+    login_form = LoginForm()
+
+    # check if the login is valid
+    if login_form.validate_on_submit():
+        return "Logged in, Successfully!"
+
+    return render_template('login.html', form=login_form)
+
+

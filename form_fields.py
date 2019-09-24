@@ -33,4 +33,39 @@ class RegistrationForm(FlaskForm):
             raise ValidationError('Username is incorrect')
 
 
+# Even if we add params here, we don't need to pass the values explicitly, Flask wtforms automatically sends the data (form and field)
+def invalid_credentials(form, field):
+    """Username and password checker"""
+    username_entered = form.username.data
+    password_entered = field.data
+
+    # check whether the data is valid or not 
+    user_object = User.query.filter_by(username=username_entered).first()
+    if user_object is None:
+        raise ValidationError('Username or password is incorrect')
+    elif password_entered != user_object.password:
+        raise ValidationError('Username or password is incorrect')
+
+class LoginForm(FlaskForm):
+    """ Login Form """
+
+    username = StringField('username_label',
+        validators=[
+            InputRequired(message="Username required"),
+        ]
+    )
+    password = PasswordField('password_label', 
+        validators=[
+            InputRequired(message="Password required"),
+            invalid_credentials
+        ]
+    )
+    submit_button = SubmitField('Submit')
+
+
+
+
+
+
+
 

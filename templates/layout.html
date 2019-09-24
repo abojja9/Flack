@@ -11,7 +11,13 @@
     </head>
 
     <body>
-       
+
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {{ messages[0][1] }}
+            {% endif %}
+        {% endwith %}
         {% block content%}
         {% endblock %}
 

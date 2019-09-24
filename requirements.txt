@@ -2,4 +2,4 @@ Flask
 Flask-SocketIO
 passlib
 flask-wtforms
-
+flask-login

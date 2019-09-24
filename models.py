@@ -1,9 +1,13 @@
 from flask_sqlalchemy import SQLAlchemy
+from flask_login import UserMixin
 
 
 db = SQLAlchemy()
 
-class User(db.Model):
+# To let the flask_login about the user we need to pass UserMixin to the class User
+# By adding UserMixin, the flask_login adds additional properties to the class User
+# This doesn't effect the User class.
+class User(UserMixin, db.Model):
     """ User database Model """
 
     __tablename__ = "users"

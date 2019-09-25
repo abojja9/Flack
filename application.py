@@ -1,7 +1,7 @@
 import os
 
 from flask import Flask, render_template, redirect, url_for, flash
-from flask_socketio import SocketIO, emit
+from flask_socketio import SocketIO, emit, send
 from passlib.hash import pbkdf2_sha256
 from flask_login import LoginManager, login_user, current_user, login_required, logout_user
 
@@ -11,7 +11,9 @@ from models import *
 app = Flask(__name__)
 app.secret_key = 'replace later'
 # app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
-# socketio = SocketIO(app)
+
+# Initialize flask-socketio
+socketio = SocketIO(app)
 
 # Configure database
 app.config["SQLALCHEMY_DATABASE_URI"] = 'postgres://rcrlddecvxotif:fe0adb891142e2d956e6f6209c2472c045f17ffb5e15aef4ee2c20ec525885dd@ec2-174-129-231-116.compute-1.amazonaws.com:5432/da364vd80pj157'
@@ -66,12 +68,11 @@ def login():
 
 @app.route("/chat", methods=["GET", "POST"])
 def chat():
-    if not current_user.is_authenticated:
-        flash('Please Login!', 'danger')
-        return redirect(url_for('login'))
+    # if not current_user.is_authenticated:
+    #     flash('Please Login!', 'danger')
+    #     return redirect(url_for('login'))
 
-    return "Chat with me"
-
+    return render_template('chat.html')
 
 @app.route("/logout", methods=["GET"])
 def logout():
@@ -80,12 +81,20 @@ def logout():
     return redirect(url_for('login'))
 
 
+@socketio.on('message')
+def message(data):
+    send(data)
+
+
+
+
+
 
 
 
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    socketio.run(app, debug=True)
 
 

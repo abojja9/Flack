@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>{% block title %}{% endblock %} - Flack</title>
+
+       
+    </head>
+
+    <body>
+        <nav>
+
+
+        </nav>
+
+        <div id="main-section">
+
+            <!-- Channel Selection -->
+            <nav id="sidebar">
+
+            </nav>
+
+            <!-- Message Area -->
+            <div id="rightside-panel">
+
+                <!-- Display Messages -->
+                <div id="display-message-section">
+
+                </div>
+
+                <!-- Input Message Area -->
+                <div id="input-area">
+                    <input type="text" id="user_message" placeholder="Type here .." autocomplete="off">
+                    <button type="button" id="send_message">SEND</button>
+
+                </div>
+
+            </div>
+
+        </div>
+         
+        <!-- Socket IO JS from flask-socketio documentation -->
+        <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
+        
+        <!-- Custom SOcket IO -->
+        <script src="{{url_for('static', filename='scripts/socketio.js')}}">
+        
+        </script>
+
+    </body>
+</html>

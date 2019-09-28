@@ -33,7 +33,7 @@
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                             <ul class="navbar-nav ml-auto">
                                 <li class="nav-item">
-                                    <a id="logout-btn" class="nav-link" href="{{ url_for('logout') }}"><span style="color: #335177">Logout</span></a>
+                                    <a id="logout-btn" class="nav-link" href="{{ url_for('logout') }}"><span style="color: #481669">Logout</span></a>
                                 </li>
                             </ul>
                         </div>
@@ -49,9 +49,31 @@
                     {% for room in rooms %}
                         <p class="select-room">#{{ room|title }}</p>
                     {% endfor %}
+
+                    <!-- <h6> Want to add a new channel? </h6>
+
+                     <div class="col-xs-1">
+                        <input class="form-control" id="new_channel" type="text" placeholder="New Channel Name .." autocomplete="off">
+                        <button class="btn btn-primary" id="add_channel" type="submit">Add</button>
+                </div> -->
                 
 
                 </nav>
+
+                <!-- Add a Channel -->
+                <!-- <p>+ Add a new channel </p> -->
+                
+                <!-- <div class="col-xs-1">
+                        <label for="ex1">col-xs-2</label>
+                        <input class="form-control" id="ex1" type="text">
+                </div> -->
+                
+                <!-- <form action="/create" method="post">
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="channel" id="channel" autofocus>
+                    </div>
+                    <button class="btn btn-primary" type="submit">Create</button>
+                </form> --> -->
 
                 <!-- Message Area -->
                 <div id="rightside-panel">
@@ -96,7 +118,7 @@
         <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
         
         <!-- Custom SOcket IO -->
-        <script src="{{url_for('static', filename='scripts/socketio_19.js')}}">
+        <script src="{{url_for('static', filename='scripts/socketio_23.js')}}">
         
         </script>
 

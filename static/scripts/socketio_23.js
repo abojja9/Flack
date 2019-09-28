@@ -68,6 +68,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     }
 
+   //  Create New Channel
+    document.querySelector('#add_channel').onclick = () => {
+         
+      const newchannel = document.querySelector('#new_channel').value;
+      socket.emit('create', {'username': username, 'room': room, "newchannel": newchannel});
+      document.querySelector('#new_channel').value = '';
+
+ }
+
     //Room Selection
     document.querySelectorAll('.select-room').forEach(p => {
        p.onclick = () => {
@@ -82,6 +91,16 @@ document.addEventListener('DOMContentLoaded', () => {
           }
        }
      });
+
+
+     // Create Room
+     socket.on('redirect', data => {
+      window.location = data.url;
+      leaveRoom(room);
+      joinRoom(data.newchannel);
+      // room = data.newchannel;
+
+   });
 
      // Leave Room
      function leaveRoom(room){

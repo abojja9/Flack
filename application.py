@@ -10,8 +10,8 @@ from form_fields import *
 from models import *
 
 app = Flask(__name__)
-app.secret_key = 'replace later'
-# app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
+# app.secret_key = 'replace later'
+app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
 
 # Initialize flask-socketio
 socketio = SocketIO(app)
@@ -20,7 +20,8 @@ socketio = SocketIO(app)
 ROOMS = ["lunch", "movies", "games", "news"]
 
 # Configure database
-app.config["SQLALCHEMY_DATABASE_URI"] = 'postgres://rcrlddecvxotif:fe0adb891142e2d956e6f6209c2472c045f17ffb5e15aef4ee2c20ec525885dd@ec2-174-129-231-116.compute-1.amazonaws.com:5432/da364vd80pj157'
+app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get('DATABASE_URL')
+# app.config["SQLALCHEMY_DATABASE_URI"] = 'postgres://rcrlddecvxotif:fe0adb891142e2d956e6f6209c2472c045f17ffb5e15aef4ee2c20ec525885dd@ec2-174-129-231-116.compute-1.amazonaws.com:5432/da364vd80pj157'
 db = SQLAlchemy(app)
 
 # Configure Flask Login
@@ -86,6 +87,12 @@ def logout():
     flash('Logged out Successfully!', 'success')
     return redirect(url_for('login'))
 
+# @app.route("/create", methods=["GET"])
+# def create(newchannel):
+#     ROOMS.append(newchannel)
+#     return render_template('chat.html', username=current_user.username,
+#     rooms=ROOMS)
+
 
 @socketio.on('message')
 def message(data):
@@ -97,23 +104,39 @@ def message(data):
     time_stamp = strftime('%b-%d %I:%M%p', localtime())
     send({"username": username, "msg": msg, "time_stamp": time_stamp}, room=room)
 
+@socketio.on('create')
+def create(data):
+    ROOMS.append(data["newchannel"])
+    print ("ROOMS:", ROOMS)
+    # join_room(data['room'])
+    send({'msg': data['username'] + ' has created the #' + data['newchannel'] + " channel."},
+         room=data['room'])
+
+    emit('redirect', {
+        'url': url_for('chat'),
+        'newchannel': data['newchannel']
+        },
+         room=data['room'])
+    # redirect(url_for('chat'))
+
 
 @socketio.on('join')
 def join(data):
 
     join_room(data['room'])
-    send({'msg': data['username'] + ' has joined the ' + data['room'] + " room."}, room=data['room'])
+    send({'msg': data['username'] + ' has joined the #' + data['room'] + " channel."}, room=data['room'])
 
 
 @socketio.on('leave')
 def leave(data):
 
     leave_room(data['room'])
-    send({'msg': data['username'] + ' has left the ' + data['room'] + " room."}, room=data['room'])
+    send({'msg': data['username'] + ' has left the #' + data['room'] + " channel."}, room=data['room'])
 
  
 
 if __name__ == "__main__":
-    socketio.run(app, debug=True)
+    # socketio.run(app, debug=True)
+    app.run()
 
 

@@ -13,16 +13,51 @@ document.addEventListener('DOMContentLoaded', () => {
        const span_timestamp = document.createElement('span');
        const br = document.createElement('br'); 
 
-       if (data.username){
-         span_username.innerHTML = data.username;
-         span_timestamp.innerHTML = data.time_stamp;
-         p.innerHTML = span_username.outerHTML + br.outerHTML + data.msg + br.outerHTML + span_timestamp.outerHTML;
-         document.querySelector("#display-message-section").append(p); 
-       } else{
+       if (data.username == username) {
+         p.setAttribute("class", "my-msg");
+
+         // Username
+         span_username.setAttribute("class", "my-username");
+         span_username.innerText = data.username;
+
+         // Timestamp
+         span_timestamp.setAttribute("class", "timestamp");
+         span_timestamp.innerText = data.time_stamp;
+
+         // HTML to append
+         p.innerHTML += span_username.outerHTML + br.outerHTML + data.msg + br.outerHTML + span_timestamp.outerHTML
+
+         //Append
+         document.querySelector('#display-message-section').append(p);
+      } else if (typeof data.username !== 'undefined') {
+         p.setAttribute("class", "others-msg");
+
+         // Username
+         span_username.setAttribute("class", "other-username");
+         span_username.innerText = data.username;
+
+         // Timestamp
+         span_timestamp.setAttribute("class", "timestamp");
+         span_timestamp.innerText = data.time_stamp;
+
+         // HTML to append
+         p.innerHTML += span_username.outerHTML + br.outerHTML + data.msg + br.outerHTML + span_timestamp.outerHTML;
+
+         //Append
+         document.querySelector('#display-message-section').append(p);
+     }  
+      else{
          printSysMsg(data.msg);
        }   
-    });
+    scrollDownChatWindow();
+      } 
+    );
 
+    // Scroll chat window down
+    function scrollDownChatWindow() {
+      const chatWindow = document.querySelector("#display-message-section");
+      chatWindow.scrollTop = chatWindow.scrollHeight;
+  }
     document.querySelector('#send_message').onclick = () => {
          
          data = {'msg': document.querySelector('#user_message').value,
@@ -57,6 +92,10 @@ document.addEventListener('DOMContentLoaded', () => {
      function joinRoom(room){
         socket.emit('join', {'username': username, 'room': room});
 
+      //   // Highlight selected room
+      //   document.querySelector('#' + CSS.escape(room)).style.color = "#ffc107";
+      //   document.querySelector('#' + CSS.escape(room)).style.backgroundColor = "white";
+
         // Clear message area
         document.querySelector('#display-message-section').innerHTML = '';
         document.querySelector('#user_message').focus();
@@ -65,8 +104,13 @@ document.addEventListener('DOMContentLoaded', () => {
      // Print System Message
      function printSysMsg(msg){
         const p = document.createElement('p');
+        p.setAttribute("class", "system-msg");
         p.innerHTML = msg;
         document.querySelector('#display-message-section').append(p);
+        scrollDownChatWindow()
+
+        // Autofocus on text box
+        document.querySelector("#user_message").focus();
      }
 
 

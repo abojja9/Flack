@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Connect to websocket
     var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
     
-    let room = "Games";
+    let room = "General";
     joinRoom(room);
 
     //   Display incoming messages

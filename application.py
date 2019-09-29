@@ -10,18 +10,19 @@ from form_fields import *
 from models import *
 
 app = Flask(__name__)
-# app.secret_key = 'replace later'
-app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
+app.secret_key = 'replace later'
+# app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
+# app.secret_key = os.getenv("SECRET_KEY")
 
 # Initialize flask-socketio
-socketio = SocketIO(app)
+socketio = SocketIO(app, manage_session=False)
 
 # Creating Flack rooms
-ROOMS = ["lunch", "movies", "games", "news"]
+ROOMS = ["lunch", "movies", "games", "news", "general"]
 
 # Configure database
-app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get('DATABASE_URL')
-# app.config["SQLALCHEMY_DATABASE_URI"] = 'postgres://rcrlddecvxotif:fe0adb891142e2d956e6f6209c2472c045f17ffb5e15aef4ee2c20ec525885dd@ec2-174-129-231-116.compute-1.amazonaws.com:5432/da364vd80pj157'
+# app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get('DATABASE_URL')
+app.config["SQLALCHEMY_DATABASE_URI"] = 'postgres://rcrlddecvxotif:fe0adb891142e2d956e6f6209c2472c045f17ffb5e15aef4ee2c20ec525885dd@ec2-174-129-231-116.compute-1.amazonaws.com:5432/da364vd80pj157'
 db = SQLAlchemy(app)
 
 # Configure Flask Login
@@ -137,6 +138,8 @@ def leave(data):
 
 if __name__ == "__main__":
     # socketio.run(app, debug=True)
-    app.run()
+    # app.run()
+    socketio.run(app)
+
 
 

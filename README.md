@@ -1,8 +1,4 @@
-# Project 2
-
-Web Programming with Python and JavaScript
-# Flack
-
+# Flack Project
 
 1. Developed an online messaging service using Flask, similar in spirit to Slack.
 New users can sign in and create or join an existing chatroom. Once a channel is selected, users can communicate in real-time, with the help of WebSockets.
